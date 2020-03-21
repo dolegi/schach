@@ -14,7 +14,7 @@ function onDragStart(_, piece) {
 }
 
 function makeBestMove() {
-  const depth = parseInt(document.querySelector('#depth').value)
+  const depth = parseInt(document.querySelector("#depth").value);
   const { move, positions, time } = getBestMove(game, depth);
   renderInfo(positions, time);
   if (!move) {
@@ -33,7 +33,7 @@ function renderMoveHistory(moves) {
   const historyElement = document.querySelector("#move-history");
   historyElement.innerHTML = "";
   for (let i = 0; i < moves.length; i = i + 2) {
-    historyElement.innerHTML += `<span>${(i + 2)/2}. ${moves[i]} ${
+    historyElement.innerHTML += `<span>${(i + 2) / 2}. ${moves[i]} ${
       moves[i + 1] ? moves[i + 1] : " "
     }</span><br>`;
   }
@@ -42,7 +42,9 @@ function renderMoveHistory(moves) {
 function renderInfo(positions, time) {
   document.querySelector("#positions-calculated").innerText = positions;
   document.querySelector("#time-spent").innerText = `${time / 1000}s`;
-  document.querySelector("#positions-per-second").innerText = `${Math.floor(positions / (time/1000))}`;
+  document.querySelector("#positions-per-second").innerText = `${Math.floor(
+    positions / (time / 1000)
+  )}`;
 }
 
 function onDrop(from, to) {

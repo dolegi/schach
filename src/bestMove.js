@@ -4,7 +4,7 @@ const pieceValues = {
   n: 30,
   b: 30,
   q: 90,
-  k: 9000
+  k: 900
 };
 let positionsCalculated;
 
@@ -14,7 +14,7 @@ export function getBestMove(game, depth = 2) {
   }
   positionsCalculated = -1;
   const start = Date.now();
-  const { move } = minimax(depth, game, true);
+  const { move } = minimax(depth, game, -10000, 10000, true);
   const time = Date.now() - start;
   return {
     move,
@@ -23,7 +23,7 @@ export function getBestMove(game, depth = 2) {
   };
 }
 
-function minimax(depth, game, isMax) {
+function minimax(depth, game, alpha, beta, isMax) {
   positionsCalculated++;
   if (depth === 0) {
     return { value: -evaluateBoard(game) };
@@ -32,17 +32,27 @@ function minimax(depth, game, isMax) {
   let bestMove = null;
   let bestValue = isMax ? -9999 : 9999;
   const mathFn = isMax ? (a, b) => a >= b : (a, b) => a <= b;
+  const gameMoves = game.fast_moves();
 
-  game.fast_moves().forEach(gameMove => {
+  for (let i = 0; i < gameMoves.length; i++) {
+    const gameMove = gameMoves[i];
     game.fast_move(gameMove);
 
-    const { value } = minimax(depth - 1, game, !isMax);
+    const { value } = minimax(depth - 1, game, alpha, beta, !isMax);
     if (mathFn(value, bestValue)) {
       bestValue = value;
       bestMove = gameMove;
     }
     game.undo();
-  });
+    if (isMax) {
+      alpha = Math.max(alpha, bestValue);
+    } else {
+      beta = Math.min(beta, bestValue);
+    }
+    if (beta <= alpha) {
+      return { value: bestValue, move: bestMove };
+    }
+  }
   return { value: bestValue, move: bestMove };
 }
 
