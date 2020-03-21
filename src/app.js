@@ -14,7 +14,8 @@ function onDragStart(_, piece) {
 }
 
 function makeBestMove() {
-  const { move, positions, time } = getBestMove(game);
+  const depth = parseInt(document.querySelector('#depth').value)
+  const { move, positions, time } = getBestMove(game, depth);
   renderInfo(positions, time);
   if (!move) {
     return;

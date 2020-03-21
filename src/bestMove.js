@@ -6,10 +6,9 @@ const pieceValues = {
   q: 90,
   k: 9000
 };
-const depth = 4;
 let positionsCalculated;
 
-export function getBestMove(game) {
+export function getBestMove(game, depth = 2) {
   if (game.game_over()) {
     return alert("You won!");
   }
