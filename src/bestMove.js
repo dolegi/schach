@@ -6,36 +6,45 @@ const pieceValues = {
   q: 90,
   k: 9000
 };
-const depth = 2;
+const depth = 4;
+let positionsCalculated;
 
 export function getBestMove(game) {
   if (game.game_over()) {
     return alert("You won!");
   }
-  return minimax(depth, game, true)[1];
+  positionsCalculated = -1;
+  const start = Date.now();
+  const { move } = minimax(depth, game, true);
+  const time = Date.now() - start;
+  return {
+    move,
+    positions: positionsCalculated,
+    time
+  };
 }
 
 function minimax(depth, game, isMax) {
+  positionsCalculated++;
   if (depth === 0) {
-    return [-evaluateBoard(game), null];
+    return { value: -evaluateBoard(game) };
   }
 
-  const gameMoves = game.moves();
   let bestMove = null;
   let bestValue = isMax ? -9999 : 9999;
   const mathFn = isMax ? (a, b) => a >= b : (a, b) => a <= b;
 
-  gameMoves.forEach(gameMove => {
-    game.move(gameMove);
+  game.fast_moves().forEach(gameMove => {
+    game.fast_move(gameMove);
 
-    const [value] = minimax(depth - 1, game, !isMax);
+    const { value } = minimax(depth - 1, game, !isMax);
     if (mathFn(value, bestValue)) {
       bestValue = value;
       bestMove = gameMove;
     }
     game.undo();
   });
-  return [bestValue, bestMove];
+  return { value: bestValue, move: bestMove };
 }
 
 function evaluateBoard(game) {

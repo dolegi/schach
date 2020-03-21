@@ -1,4 +1,5 @@
 import { getBestMove } from "./bestMove.js";
+import Chess from "../lib/chess.js";
 let board;
 const game = new Chess();
 
@@ -13,11 +14,12 @@ function onDragStart(_, piece) {
 }
 
 function makeBestMove() {
-  const bestMove = getBestMove(game);
-  if (!bestMove) {
+  const { move, positions, time } = getBestMove(game);
+  renderInfo(positions, time);
+  if (!move) {
     return;
   }
-  game.move(bestMove);
+  game.fast_move(move);
   board.position(game.fen());
   renderMoveHistory(game.history());
 
@@ -34,6 +36,11 @@ function renderMoveHistory(moves) {
       moves[i + 1] ? moves[i + 1] : " "
     }</span><br>`;
   }
+}
+
+function renderInfo(positions, time) {
+  document.querySelector("#positions-calculated").innerText = positions;
+  document.querySelector("#time-spent").innerText = `${time / 1000}s`;
 }
 
 function onDrop(from, to) {
@@ -54,7 +61,7 @@ function onDrop(from, to) {
 board = ChessBoard("myBoard", {
   draggable: true,
   position: "start",
-  onDragStart: onDragStart,
-  onDrop: onDrop,
+  onDragStart,
+  onDrop,
   onSnapEnd: () => board.position(game.fen())
 });
