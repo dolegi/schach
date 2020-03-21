@@ -16,10 +16,10 @@ function onDragStart(_, piece) {
 function makeBestMove() {
   const depth = parseInt(document.querySelector("#depth").value);
   const { move, positions, time } = getBestMove(game, depth);
-  renderInfo(positions, time);
   if (!move) {
     return;
   }
+  renderInfo(positions, time);
   game.fast_move(move);
   board.position(game.fen());
   renderMoveHistory(game.history());

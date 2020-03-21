@@ -1,11 +1,14 @@
+import pieceSquareTables from "./pieceSquareTables.js";
+
 const pieceValues = {
-  p: 10,
-  r: 50,
-  n: 30,
-  b: 30,
-  q: 90,
-  k: 900
+  p: 100,
+  n: 320,
+  b: 330,
+  r: 500,
+  q: 900,
+  k: 20000
 };
+
 let positionsCalculated;
 
 export function getBestMove(game, depth = 2) {
@@ -14,8 +17,9 @@ export function getBestMove(game, depth = 2) {
   }
   positionsCalculated = -1;
   const start = Date.now();
-  const { move } = minimax(depth, game, -10000, 10000, true);
+  const { move, value } = minimax(depth, game, -10000, 10000, true);
   const time = Date.now() - start;
+  console.log(value)
   return {
     move,
     positions: positionsCalculated,
@@ -62,16 +66,20 @@ function evaluateBoard(game) {
   for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
       totalEvaluation =
-        totalEvaluation + getPieceValue(game.get(`${xAxis[i]}${j + 1}`));
+        totalEvaluation + getPieceValue(game.get(`${xAxis[i]}${j + 1}`), i, j);
     }
   }
   return totalEvaluation;
 }
 
-function getPieceValue(piece) {
+function getPieceValue(piece, x, y) {
   if (!piece) {
     return 0;
   }
-  const value = pieceValues[piece.type] || 0;
-  return piece.color === "w" ? value : -value;
+
+  if (piece.color === 'w') {
+    return pieceValues[piece.type] + pieceSquareTables.white[piece.type][x][y]
+  }  else {
+    return -(pieceValues[piece.type] + pieceSquareTables.black[piece.type][x][y])
+  }
 }
