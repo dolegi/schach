@@ -49,9 +49,9 @@ function minimax(depth, game, alpha, beta, isMax) {
     }
     game.undo();
     if (isMax) {
-      alpha = Math.max(alpha, bestValue);
+      alpha = bestValue;
     } else {
-      beta = Math.min(beta, bestValue);
+      beta = bestValue;
     }
     if (beta <= alpha) {
       return { value: bestValue, move: bestMove };
