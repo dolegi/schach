@@ -69,3 +69,4 @@ board = ChessBoard("myBoard", {
   onDrop,
   onSnapEnd: () => board.position(game.fen())
 });
+board.position(game.fen());

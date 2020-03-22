@@ -17,9 +17,8 @@ export function getBestMove(game, depth = 2) {
   }
   positionsCalculated = -1;
   const start = Date.now();
-  const { move, value } = minimax(depth, game, -10000, 10000, true);
+  const { move, value } = minimax(depth, game, -Infinity, Infinity, true);
   const time = Date.now() - start;
-  console.log(value)
   return {
     move,
     positions: positionsCalculated,
@@ -34,24 +33,27 @@ function minimax(depth, game, alpha, beta, isMax) {
   }
 
   let bestMove = null;
-  let bestValue = isMax ? -9999 : 9999;
-  const mathFn = isMax ? (a, b) => a >= b : (a, b) => a <= b;
+  let bestValue = isMax ? -Infinity: Infinity;
   const gameMoves = game.fast_moves();
 
   for (let i = 0; i < gameMoves.length; i++) {
     const gameMove = gameMoves[i];
     game.fast_move(gameMove);
-
     const { value } = minimax(depth - 1, game, alpha, beta, !isMax);
-    if (mathFn(value, bestValue)) {
-      bestValue = value;
-      bestMove = gameMove;
-    }
     game.undo();
+
     if (isMax) {
-      alpha = bestValue;
+      if (value >= bestValue) {
+        bestValue = value;
+        bestMove = gameMove;
+      }
+      alpha = Math.max(alpha,bestValue);
     } else {
-      beta = bestValue;
+      if (value <= bestValue) {
+        bestValue = value;
+        bestMove = gameMove;
+      }
+      beta = Math.min(beta, bestValue);
     }
     if (beta <= alpha) {
       return { value: bestValue, move: bestMove };
@@ -65,8 +67,7 @@ function evaluateBoard(game) {
   let totalEvaluation = 0;
   for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
-      totalEvaluation =
-        totalEvaluation + getPieceValue(game.get(`${xAxis[i]}${j + 1}`), i, j);
+      totalEvaluation += getPieceValue(game.get(`${xAxis[i]}${j + 1}`), i, j);
     }
   }
   return totalEvaluation;
