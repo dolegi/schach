@@ -1,17 +1,17 @@
 import { getBestMove } from "./bestMove.js";
 import Chess from "../lib/chess.js";
-let board;
-const game = new Chess();
+import board from './chessboard.js'
 
-function onDragStart(_, piece) {
-  if (
-    game.in_checkmate() === true ||
-    game.in_draw() === true ||
-    piece.search(/^b/) !== -1
-  ) {
-    return false;
+const game = new Chess();
+const { display } = board(({ from, to }) => {
+  const move = game.move({ from, to, promotion: 'q' })
+  if (!move) {
+    return console.log('Invalid move')
   }
-}
+  display(game.fen())
+  renderMoveHistory(game.history());
+  makeBestMove();
+})
 
 function makeBestMove() {
   const depth = parseInt(document.querySelector("#depth").value);
@@ -21,7 +21,7 @@ function makeBestMove() {
   }
   renderInfo(positions, time);
   game.fast_move(move);
-  board.position(game.fen());
+  display(game.fen());
   renderMoveHistory(game.history());
 
   if (game.game_over()) {
@@ -46,27 +46,3 @@ function renderInfo(positions, time) {
     positions / (time / 1000)
   )}`;
 }
-
-function onDrop(from, to) {
-  const move = game.move({
-    from,
-    to,
-    promotion: "q"
-  });
-
-  if (move === null) {
-    return "snapback";
-  }
-
-  renderMoveHistory(game.history());
-  setTimeout(makeBestMove, 250);
-}
-
-board = ChessBoard("myBoard", {
-  draggable: true,
-  position: "start",
-  onDragStart,
-  onDrop,
-  onSnapEnd: () => board.position(game.fen())
-});
-board.position(game.fen());

@@ -1,1 +1,26 @@
+#board, table {
+  border: 1px black solid;
+  text-align: center;
+  font-size: 40;
+}
+
+#board td {
+  height: 50px;
+  width: 50px;
+  cursor: default;
+  user-select: none;
+}
+
+#board tr:nth-child(even) td:nth-child(odd), 
+tr:nth-child(odd) td:nth-child(even) {
+    background-color: #ccc;
+}
+
+#board td:hover {
+  background: #adb0d9 !important;
+}
+
+#board td.selected {
+  background: #b9d9ad !important;
+}
 
