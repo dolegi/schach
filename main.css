@@ -1,7 +1,18 @@
+body {
+  margin: 0 auto;
+  max-width: 50em;
+  font-family: "Helvetica", "Arial", sans-serif;
+  line-height: 1.5;
+  padding: 2em 1em;
+  color: #555;
+  text-align: center;
+}
+
 #board, table {
   border: 1px black solid;
   text-align: center;
   font-size: 40;
+  margin: 1em auto;
 }
 
 #board td {
@@ -13,7 +24,7 @@
 
 #board tr:nth-child(even) td:nth-child(odd), 
 tr:nth-child(odd) td:nth-child(even) {
-    background-color: #ccc;
+  background-color: #ccc;
 }
 
 #board td:hover {
@@ -23,4 +34,6 @@ tr:nth-child(odd) td:nth-child(even) {
 #board td.selected {
   background: #b9d9ad !important;
 }
+
+
 

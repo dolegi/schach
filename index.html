@@ -8,6 +8,22 @@
     <link rel="stylesheet" href="/main.css">
   </head>
   <body>
+    <div id="options">
+      <label for="depth">Depth:</label>
+      <select id="depth">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" selected>3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
+    </div>
+    <div id="info">
+      <div>Positions <span id="positions-calculated"></span></div>
+      <div>Time <span id="time-spent"></span></div>
+      <div>Positions Per Second <span id="positions-per-second"></span></div>
+    </div>
     <table id="board">
       <tr>
         <td></td>
@@ -90,24 +106,7 @@
         <td></td>
       </tr>
     </table>
-    <div id="myBoard" style="width: 400px"></div>
 
-    <div id="options">
-      <label for="depth">Depth:</label>
-      <select id="depth">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3" selected>3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-      </select>
-    </div>
-    <div id="info">
-      <div>Positions <span id="positions-calculated"></span></div>
-      <div>Time <span id="time-spent"></span></div>
-      <div>Positions Per Second <span id="positions-per-second"></span></div>
-    </div>
     <div id="move-history">
     </div>
     <script type="module" src="/src/app.js"></script>
