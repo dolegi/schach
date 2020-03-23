@@ -1,4 +1,4 @@
-const white = {
+const black = {
   p: [
     [0, 0, 0, 0, 0, 0, 0, 0],
     [78, 83, 86, 73, 102, 82, 85, 90],
@@ -61,8 +61,8 @@ const white = {
   ]
 };
 
-const black = Object.keys(white).reduce(
-  (table, key) => ({ ...table, [key]: white[key].slice().reverse() }),
+const white = Object.keys(black).reduce(
+  (table, key) => ({ ...table, [key]: black[key].slice().reverse() }),
   {}
 );
 
