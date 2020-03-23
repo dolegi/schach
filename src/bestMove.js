@@ -33,7 +33,7 @@ function minimax(depth, game, alpha, beta, isMax) {
   }
 
   let bestMove = null;
-  let bestValue = isMax ? -Infinity: Infinity;
+  let bestValue = isMax ? -Infinity : Infinity;
   const gameMoves = game.fast_moves();
 
   for (let i = 0; i < gameMoves.length; i++) {
@@ -47,7 +47,7 @@ function minimax(depth, game, alpha, beta, isMax) {
         bestValue = value;
         bestMove = gameMove;
       }
-      alpha = Math.max(alpha,bestValue);
+      alpha = Math.max(alpha, bestValue);
     } else {
       if (value <= bestValue) {
         bestValue = value;
@@ -78,9 +78,11 @@ function getPieceValue(piece, x, y) {
     return 0;
   }
 
-  if (piece.color === 'w') {
-    return pieceValues[piece.type] + pieceSquareTables.white[piece.type][x][y]
-  }  else {
-    return -(pieceValues[piece.type] + pieceSquareTables.black[piece.type][x][y])
+  if (piece.color === "w") {
+    return pieceValues[piece.type] + pieceSquareTables.white[piece.type][x][y];
+  } else {
+    return -(
+      pieceValues[piece.type] + pieceSquareTables.black[piece.type][x][y]
+    );
   }
 }

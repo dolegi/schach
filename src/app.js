@@ -1,17 +1,17 @@
 import { getBestMove } from "./bestMove.js";
 import Chess from "../lib/chess.js";
-import board from './chessboard.js'
+import board from "./chessboard.js";
 
 const game = new Chess();
 const { display } = board(({ from, to }) => {
-  const move = game.move({ from, to, promotion: 'q' })
+  const move = game.move({ from, to, promotion: "q" });
   if (!move) {
-    return console.log('Invalid move')
+    return console.log("Invalid move");
   }
-  display(game.fen())
+  display(game.fen());
   renderMoveHistory(game.history());
   makeBestMove();
-})
+});
 
 function makeBestMove() {
   const depth = parseInt(document.querySelector("#depth").value);
