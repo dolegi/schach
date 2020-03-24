@@ -1,6 +1,7 @@
 - replace chess.js
-- style website
-- deploy
+- show pieces to the side
+- add fen input
+- create new game
 
 - better move evaluation
 - negamax
