@@ -7,4 +7,6 @@
 - negamax
 - move ordering
 - faster move generation
-
+- improve endgame
+- watchout for stalemate
+- opening books
