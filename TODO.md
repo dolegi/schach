@@ -10,3 +10,4 @@
 - improve endgame
 - watchout for stalemate
 - opening books
+- uci interface
