@@ -37,7 +37,7 @@ function getWhiteKnightMoves(board, x, y) {
   return moves
 }
 
-function getWhiteBishopDirectionMoves(board, x, y, xDirection, yDirection) {
+function getWhiteDirectionMoves(board, x, y, xDirection, yDirection) {
   const moves = []
   let blocked = false
 
@@ -62,10 +62,19 @@ function getWhiteBishopDirectionMoves(board, x, y, xDirection, yDirection) {
 
 function getWhiteBishopMoves(board, x, y) {
   return [].concat(
-    getWhiteBishopDirectionMoves(board, x, y, -1, -1),
-    getWhiteBishopDirectionMoves(board, x, y, -1, +1),
-    getWhiteBishopDirectionMoves(board, x, y, +1, +1),
-    getWhiteBishopDirectionMoves(board, x, y, +1, -1),
+    getWhiteDirectionMoves(board, x, y, -1, -1),
+    getWhiteDirectionMoves(board, x, y, -1, +1),
+    getWhiteDirectionMoves(board, x, y, +1, +1),
+    getWhiteDirectionMoves(board, x, y, +1, -1),
+  )
+}
+
+function getWhiteRookMoves(board, x, y) {
+  return [].concat(
+    getWhiteDirectionMoves(board, x, y, +1, 0),
+    getWhiteDirectionMoves(board, x, y, -1, 0),
+    getWhiteDirectionMoves(board, x, y, 0, +1),
+    getWhiteDirectionMoves(board, x, y, 0, -1),
   )
 }
 
@@ -87,6 +96,14 @@ function getWhiteMoves(board) {
       }
       if (square === 'B') {
         moves = moves.concat(getWhiteBishopMoves(board, x, y))
+      }
+      if (square === 'R') {
+        moves = moves.concat(getWhiteRookMoves(board, x, y))
+      }
+      if (square === 'Q') {
+        moves = moves.concat(getWhiteBishopMoves(board, x, y), getWhiteRookMoves(board, x, y))
+      }
+      if (square === 'K') {
       }
     }
   }
