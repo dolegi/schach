@@ -6,12 +6,14 @@
   "scripts": {
     "start": "npx servor --reload",
     "lint": "npx prettier --write src/*",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "jest": "^25.2.3"
+  },
   "devDependencies": {
     "prettier": "^1.19.1"
   }

@@ -1,4 +1,6 @@
 - replace chess.js
+-- remove bitwise
+-- use fen more often
 - show pieces to the side
 - add fen input
 - create new game
