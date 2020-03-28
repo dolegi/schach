@@ -15,7 +15,7 @@ describe('moves', () => {
       const { history } = chess(position)
       const { board, active } = history.pop()
 
-      expect(moves(board, active).length).toEqual(33)
+      expect(moves(board, active).length).toEqual(34)
     })
 
     test('bishops can move', () => {
@@ -23,7 +23,7 @@ describe('moves', () => {
       const { history } = chess(position)
       const { board, active } = history.pop()
 
-      expect(moves(board, active).length).toEqual(35)
+      expect(moves(board, active).length).toEqual(37)
     })
 
     test('rooks can move', () => {
@@ -32,6 +32,22 @@ describe('moves', () => {
       const { board, active } = history.pop()
 
       expect(moves(board, active).length).toEqual(35)
+    })
+
+    test('queens can move', () => {
+      const position = 'rnbqkbnr/pppppppp/8/6Q1/8/8/PPPPPPPP/RNB1KBNR w KQkq - 0 1'
+      const { history } = chess(position)
+      const { board, active } = history.pop()
+
+      expect(moves(board, active).length).toEqual(38)
+    })
+
+    test('kings can move', () => {
+      const position = 'rnbqkbnr/ppppp1pp/8/8/5pK1/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1'
+      const { history } = chess(position)
+      const { board, active } = history.pop()
+
+      expect(moves(board, active).length).toEqual(27)
     })
   })
 })

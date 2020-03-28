@@ -78,6 +78,25 @@ function getWhiteRookMoves(board, x, y) {
   )
 }
 
+function getWhiteKingMoves(board, x, y) {
+  const moves = []
+  ;[
+    { x: x-1, y: y-1 },
+    { x: x-1, y },
+    { x: x-1, y: y+1 },
+    { x: x+1, y: y-1 },
+    { x: x+1, y },
+    { x: x+1, y: y+1 },
+    { x, y: y-1 },
+    { x, y: y+1 }
+  ].forEach(to => {
+    if (board[to.y] && (board[to.y][to.x] === null || BLACK_PIECES.includes(board[to.y][to.x]))) {
+      moves.push({ from: { x, y }, to })
+    }
+  })
+  return moves
+}
+
 function getWhiteMoves(board) {
   let moves = []
 
@@ -101,9 +120,13 @@ function getWhiteMoves(board) {
         moves = moves.concat(getWhiteRookMoves(board, x, y))
       }
       if (square === 'Q') {
-        moves = moves.concat(getWhiteBishopMoves(board, x, y), getWhiteRookMoves(board, x, y))
+        moves = moves.concat(
+          getWhiteBishopMoves(board, x, y), 
+          getWhiteRookMoves(board, x, y)
+        )
       }
       if (square === 'K') {
+        moves = moves.concat(getWhiteKingMoves(board, x, y))
       }
     }
   }
