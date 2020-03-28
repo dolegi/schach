@@ -1,7 +1,5 @@
 - move generation
--- black moves
--- currently in check
--- moving into check
+-- BUG: pawns moving 2 squares (jumping over pieces)
 -- in checkmate
 -- castling
 -- en passant
@@ -9,10 +7,6 @@
 --- stalemate
 --- insufficient_material,
 --- in_threefold_repetition,
-
-
-
-
 
 
 - validate fen
@@ -28,3 +22,6 @@
 - watchout for stalemate
 - opening books
 - uci interface
+
+# done
+-- moving into check

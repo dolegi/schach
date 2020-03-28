@@ -46,7 +46,25 @@ describe('moves', () => {
       const { history } = chess(position)
       const { board, active } = history.pop()
 
-      expect(moves(board, active).length).toEqual(27)
+      expect(moves(board, active).length).toEqual(26)
+    })
+
+    describe('when in check', () => {
+      test('pawn check', () => {
+        const position = 'rnbqkbnr/pppp1ppp/8/5p2/6K1/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active } = history.pop()
+
+        expect(moves(board, active).length).toEqual(6)
+      })
+
+      test('rook, check can be blocked', () => {
+        const position = 'rnbqkbn1/pppppprp/8/8/7B/6K1/PPPPPPPP/RNBQ2NR w KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active } = history.pop()
+
+        expect(moves(board, active).length).toEqual(5)
+      })
     })
   })
 
@@ -88,7 +106,7 @@ describe('moves', () => {
       const { history } = chess(position)
       const { board, active } = history.pop()
 
-      expect(moves(board, active).length).toEqual(27)
+      expect(moves(board, active).length).toEqual(26)
     })
   })
 })
