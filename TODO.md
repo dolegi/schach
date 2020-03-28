@@ -1,8 +1,8 @@
 - move generation
--- king moves
--- in check
--- in checkmate
 -- black moves
+-- currently in check
+-- moving into check
+-- in checkmate
 -- castling
 -- en passant
 -- game over
@@ -15,6 +15,7 @@
 
 
 
+- validate fen
 - show pieces to the side
 - add fen input
 - create new game
