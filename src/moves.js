@@ -98,7 +98,7 @@ module.exports = function moves(board, active) {
     if (board[y+direction] && board[y+direction][x] === null) {
       moves = moves.concat(addMove(board, { from: { x, y }, to: { x, y: y+direction } }))
     }
-    if (y === startRow && board[y+(direction*2)] && board[y+(direction*2)][x] === null) {
+    if (y === startRow && board[y+direction] && board[y+direction][x] === null && board[y+(direction*2)] && board[y+(direction*2)][x] === null) {
       moves = moves.concat(addMove(board, { from: { x, y }, to: { x, y: y+(direction*2) } }))
     }
     if (board[y+direction] && board[y+direction][x-1] && oppPieces(active).includes(board[y+direction][x-1])) {

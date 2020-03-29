@@ -1,5 +1,4 @@
 - move generation
--- BUG: pawns moving 2 squares (jumping over pieces)
 -- in checkmate
 -- castling
 -- en passant
@@ -25,3 +24,4 @@
 
 # done
 -- moving into check
+-- BUG: pawns moving 2 squares (jumping over pieces)
