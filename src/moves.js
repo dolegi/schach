@@ -7,7 +7,7 @@ const ownKing = active => active === 'w' ? 'K' : 'k'
 const oppKing = active => active === 'w' ? 'k' : 'K'
 const opponent = active => active === 'w' ? 'b' : 'w'
 
-module.exports = function moves(board, active) {
+module.exports = function moves(board, active, castling = '-') {
 
   function attacked(board, x, y) {
     let attacked = false
@@ -59,7 +59,7 @@ module.exports = function moves(board, active) {
     return attacked
   }
 
-  function inCheck(board, active) {
+  function inCheck(board) {
     let pos = {}
     for (let y = 0 ; y < board.length; y++) {
       const row = board[y]
@@ -77,13 +77,13 @@ module.exports = function moves(board, active) {
 
     return attacked(board, pos.x, pos.y)
   }
-  
+
   function addMove(board, move) {
     const originalSquare = board[move.to.y][move.to.x] 
     board[move.to.y][move.to.x] = board[move.from.y][move.from.x]
     board[move.from.y][move.from.x] = null
-    
-    if (inCheck(board, active)) {
+
+    if (inCheck(board)) {
       board[move.from.y][move.from.x] = board[move.to.y][move.to.x]
       board[move.to.y][move.to.x] = originalSquare
       return []
@@ -186,6 +186,32 @@ module.exports = function moves(board, active) {
         moves = moves.concat(addMove(board, { from: { x, y }, to }))
       }
     })
+
+    const { row, kSide, qSide } = {
+      w: { row: 7, kSide: 'K', qSide: 'Q' },
+      b: { row: 0, kSide: 'k', qSide: 'q' }
+    }[active]
+
+    if (!inCheck(board)) {
+      if (castling.includes(kSide)
+        && board[row][6] === null
+        && board[row][5] === null) {
+        moves = moves.concat(addMove(board, {
+          from: { x, y }, to: { x: 6, y },
+          from2: { x: 7, y: row }, to2: { x: 5, y: row }
+        }))
+      }
+      if (castling.includes(qSide)
+        && board[row][1] === null
+        && board[row][2] === null
+        && board[row][3] === null) {
+        moves = moves.concat(addMove(board, {
+          from: { x, y }, to: { x: 2, y },
+          from2: { x: 0, y: row }, to2: { x: 3, y: row }
+        }))
+      }
+    }
+
     return moves
   }
 

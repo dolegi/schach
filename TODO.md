@@ -1,8 +1,8 @@
 - move generation
 -- in checkmate
--- castling
 -- en passant
 -- game over
+-- pawn promotion
 --- stalemate
 --- insufficient_material,
 --- in_threefold_repetition,
@@ -25,3 +25,4 @@
 # done
 -- moving into check
 -- BUG: pawns moving 2 squares (jumping over pieces)
+-- castling

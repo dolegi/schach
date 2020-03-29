@@ -66,6 +66,38 @@ describe('moves', () => {
         expect(moves(board, active).length).toEqual(4)
       })
     })
+
+    describe('castling', () => {
+      test('king side', () => {
+        const position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R w KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active, castling } = history.pop()
+        const validMoves = moves(board, active, castling)
+
+        expect(validMoves[19]).toEqual({
+          from: { x: 4, y: 7, },
+          from2: { x: 7, y: 7 },
+          to:  { x: 6, y: 7 },
+          to2:  { x: 5, y: 7 }
+        })
+        expect(validMoves.length).toEqual(22)
+      })
+
+      test('queen side', () => {
+        const position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active, castling } = history.pop()
+        const validMoves = moves(board, active, castling)
+
+        expect(validMoves[22]).toEqual({
+          from: { x: 4, y: 7 },
+          from2: { x: 0, y: 7 },
+          to:  { x: 2, y: 7 },
+          to2:  { x: 3, y: 7 }
+        })
+        expect(validMoves.length).toEqual(25)
+      })
+    })
   })
 
   describe('black', () => {
@@ -124,6 +156,38 @@ describe('moves', () => {
         const { board, active } = history.pop()
 
         expect(moves(board, active).length).toEqual(4)
+      })
+    })
+
+    describe('castling', () => {
+      test('king side', () => {
+        const position = 'rnbqk2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active, castling } = history.pop()
+        const validMoves = moves(board, active, castling)
+
+        expect(validMoves[3]).toEqual({
+          from: { x: 4, y: 0 },
+          from2: { x: 7, y: 0 },
+          to:  { x: 6, y: 0 },
+          to2:  { x: 5, y: 0 }
+        })
+        expect(validMoves.length).toEqual(22)
+      })
+
+      test('queen side', () => {
+        const position = 'r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active, castling } = history.pop()
+        const validMoves = moves(board, active, castling)
+
+        expect(validMoves[6]).toEqual({
+          from: { x: 4, y: 0 },
+          from2: { x: 0, y: 0 },
+          to:  { x: 2, y: 0 },
+          to2:  { x: 3, y: 0 }
+        })
+        expect(validMoves.length).toEqual(25)
       })
     })
   })
