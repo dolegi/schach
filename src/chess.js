@@ -112,6 +112,7 @@ module.exports = function chess(fen = DEFAULT_POSITION) {
     gameOver,
     move,
     fen: fenFn,
+    undo: () => history.pop()
 
     // move,
     // undo,
