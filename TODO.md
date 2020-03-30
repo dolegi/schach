@@ -1,6 +1,5 @@
 - move generation
--- add to ui
--- compare to chess.js
+- BUG can castle multiple times
 -- in checkmate
 -- en passant
 -- game over
@@ -8,11 +7,7 @@
 --- stalemate
 --- insufficient_material,
 --- in_threefold_repetition,
-
-undo
-
-get
-history
+-- compare to chess.js
 
 - validate fen
 - show pieces to the side
@@ -39,3 +34,7 @@ game_over
 moves
 move
 fen
+undo
+get
+history
+-- add to ui

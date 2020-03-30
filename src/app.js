@@ -1,15 +1,21 @@
 import { getBestMove } from "./bestMove.js";
-import Chess from "../lib/chess.js";
+import Chess from "./chess.js";
 import board from "./chessboard.js";
 
-const game = new Chess();
+const game = Chess();
 const { display } = board(({ from, to }) => {
-  const move = game.move({ from, to, promotion: "q" });
+  let move
+  if (from.x === 4 && from.y === 7 && to.x === 6 && to.y === 7) { // kings side castling
+    move = game.move({ from, to, from2: { x: 7, y: 7 }, to2: { x: 5, y: 7 } });
+  } else if (from.x === 4 && from.y === 7 && to.x === 2 && to.y === 7) { // queen side castling
+    move = game.move({ from, to, from2: { x: 0, y: 7 }, to2: { x: 3, y: 7 } });
+  } else {
+    move = game.move({ from, to });
+  }
   if (!move) {
     return console.log("Invalid move");
   }
   display(game.fen());
-  renderMoveHistory(game.history());
   makeBestMove();
 });
 
@@ -20,22 +26,11 @@ function makeBestMove() {
     return;
   }
   renderInfo(positions, time);
-  game.fast_move(move);
+  game.move(move);
   display(game.fen());
-  renderMoveHistory(game.history());
 
-  if (game.game_over()) {
+  if (game.gameOver()) {
     alert("You lost");
-  }
-}
-
-function renderMoveHistory(moves) {
-  const historyElement = document.querySelector("#move-history");
-  historyElement.innerHTML = "";
-  for (let i = 0; i < moves.length; i = i + 2) {
-    historyElement.innerHTML += `<span>${(i + 2) / 2}. ${moves[i]} ${
-      moves[i + 1] ? moves[i + 1] : " "
-    }</span><br>`;
   }
 }
 

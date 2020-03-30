@@ -45,7 +45,7 @@ function addEventListeners(callback) {
       cell.addEventListener("click", event => {
         const x = event.target.cellIndex;
         const y = event.target.parentNode.rowIndex;
-        const to = `${String.fromCharCode(97 + x)}${8 - y}`;
+        const to = { x, y }
         if (!from) {
           from = to;
           cell.classList.add("selected");

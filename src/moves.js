@@ -8,7 +8,7 @@ const oppKing = active => active === 'w' ? 'k' : 'K'
 const oppKnight = active => active === 'w' ? 'n' : 'N'
 const opponent = active => active === 'w' ? 'b' : 'w'
 
-module.exports = function moves(board, active, castling = '-') {
+export default function moves(board, active, castling = '-') {
 
   function attacked(board, x, y) {
     let attacked = false
@@ -25,7 +25,7 @@ module.exports = function moves(board, active, castling = '-') {
     ]
 
     for (let i = 0; i < directions.length; i++) {
-      direction = directions[i]
+      let direction = directions[i]
 
       let to = { x: x+direction.x, y: y+direction.y }
       while (true) {

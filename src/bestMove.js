@@ -12,7 +12,7 @@ const pieceValues = {
 let positionsCalculated;
 
 export function getBestMove(game, depth = 2) {
-  if (game.game_over()) {
+  if (game.gameOver()) {
     return alert("You won!");
   }
   positionsCalculated = -1;
@@ -34,11 +34,11 @@ function minimax(depth, game, alpha, beta, isMax) {
 
   let bestMove = null;
   let bestValue = isMax ? -Infinity : Infinity;
-  const gameMoves = game.fast_moves();
+  const gameMoves = game.moves();
 
   for (let i = 0; i < gameMoves.length; i++) {
     const gameMove = gameMoves[i];
-    game.fast_move(gameMove);
+    game.move(gameMove);
     const { value } = minimax(depth - 1, game, alpha, beta, !isMax);
     game.undo();
 
@@ -63,11 +63,12 @@ function minimax(depth, game, alpha, beta, isMax) {
 }
 
 function evaluateBoard(game) {
-  const xAxis = "abcdefgh";
   let totalEvaluation = 0;
-  for (let i = 0; i < 8; i++) {
-    for (let j = 0; j < 8; j++) {
-      totalEvaluation += getPieceValue(game.get(`${xAxis[i]}${j + 1}`), i, j);
+  const { history } = game
+  const { board } = history[history.length-1]
+  for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < 8; x++) {
+      totalEvaluation += getPieceValue(board[y][x], x, y);
     }
   }
   return totalEvaluation;
@@ -78,11 +79,11 @@ function getPieceValue(piece, x, y) {
     return 0;
   }
 
-  if (piece.color === "w") {
-    return pieceValues[piece.type] + pieceSquareTables.white[piece.type][x][y];
+  if ('PRNBQK'.includes(piece)) {
+    return pieceValues[piece.toLowerCase()] + pieceSquareTables.white[piece.toLowerCase()][y][x];
   } else {
     return -(
-      pieceValues[piece.type] + pieceSquareTables.black[piece.type][x][y]
+      pieceValues[piece] + pieceSquareTables.black[piece.toLowerCase()][y][x]
     );
   }
 }

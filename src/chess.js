@@ -1,6 +1,6 @@
 const DEFAULT_POSITION =
   'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-const moves = require('./moves')
+import moves from './moves.js'
 
 function parse(fen) {
   const [
@@ -38,7 +38,7 @@ function parse(fen) {
   }
 }
 
-module.exports = function chess(fen = DEFAULT_POSITION) {
+export default function chess(fen = DEFAULT_POSITION) {
   const history = [parse(fen)]
 
   function lastMove() {
@@ -51,19 +51,33 @@ module.exports = function chess(fen = DEFAULT_POSITION) {
   }
 
   function move(move) {
+    const moves = getMoves()
+    if (!moves.some(m =>
+      m.to.x === move.to.x
+      && m.to.y === move.to.y
+      && m.from.x === move.from.x
+      && m.from.y === move.from.y)) {
+      return false
+    }
     const lMove = lastMove()
     const board = JSON.parse(JSON.stringify(lMove.board))
     board[move.to.y][move.to.x] = board[move.from.y][move.from.x]
     board[move.from.y][move.from.x] = null
+    if (move.from2 && move.to2) {
+      board[move.to2.y][move.to2.x] = board[move.from2.y][move.from2.x]
+      board[move.from2.y][move.from2.x] = null
+    }
 
     history.push({
       board,
       active: lMove.active === 'w' ? 'b' : 'w',
-      castling: lMove,
+      castling: lMove.castling,
       enPassant: lMove.enPassant,
       halfMove: lMove.halfMove,
       fullMove: lMove.fullMove + 1
     })
+
+    return true
   }
 
   function fenFn() {
@@ -105,24 +119,18 @@ module.exports = function chess(fen = DEFAULT_POSITION) {
     return fen
   }
 
+  function getMoves() {
+    const { board, active, castling } = lastMove()
+    return moves(board, active, castling)
+  }
+
   return {
     history,
     parse,
-    moves,
+    moves: getMoves,
     gameOver,
     move,
     fen: fenFn,
     undo: () => history.pop()
-
-    // move,
-    // undo,
-
-    // in_check,
-    // in_checkmate,
-    // in_stalemate,
-    // in_draw,
-    // insufficient_material,
-    // in_threefold_repetition,
-    // game_over,
   }
 }
