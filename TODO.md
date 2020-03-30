@@ -1,5 +1,6 @@
 - move generation
--- remove board from every function
+-- add to ui
+-- compare to chess.js
 -- in checkmate
 -- en passant
 -- game over
@@ -8,6 +9,10 @@
 --- insufficient_material,
 --- in_threefold_repetition,
 
+undo
+
+get
+history
 
 - validate fen
 - show pieces to the side
@@ -29,3 +34,8 @@
 -- castling
 -- knights are attacking king
 -- castling through check
+-- remove board from every function
+game_over
+moves
+move
+fen

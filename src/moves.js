@@ -114,7 +114,7 @@ module.exports = function moves(board, active, castling = '-') {
     return move
   }
 
-  function getPawnMoves(board, x, y, direction, startRow) {
+  function getPawnMoves(x, y, direction, startRow) {
     let moves = []
     if (board[y+direction] && board[y+direction][x] === null) {
       moves = moves.concat(addMove(board, { from: { x, y }, to: { x, y: y+direction } }))
@@ -131,7 +131,7 @@ module.exports = function moves(board, active, castling = '-') {
     return moves
   }
 
-  function getKnightMoves(board, x, y) {
+  function getKnightMoves(x, y) {
     let moves = []
     ;[
       { x: x-1, y: y-2 },
@@ -150,7 +150,7 @@ module.exports = function moves(board, active, castling = '-') {
     return moves
   }
 
-  function getDirectionMoves(board, x, y, xDirection, yDirection) {
+  function getDirectionMoves(x, y, xDirection, yDirection) {
     let moves = []
     let blocked = false
 
@@ -173,25 +173,25 @@ module.exports = function moves(board, active, castling = '-') {
     return moves
   }
 
-  function getBishopMoves(board, x, y) {
+  function getBishopMoves(x, y) {
     return [].concat(
-      getDirectionMoves(board, x, y, -1, -1),
-      getDirectionMoves(board, x, y, -1, +1),
-      getDirectionMoves(board, x, y, +1, +1),
-      getDirectionMoves(board, x, y, +1, -1),
+      getDirectionMoves(x, y, -1, -1),
+      getDirectionMoves(x, y, -1, +1),
+      getDirectionMoves(x, y, +1, +1),
+      getDirectionMoves(x, y, +1, -1),
     )
   }
 
-  function getRookMoves(board, x, y) {
+  function getRookMoves(x, y) {
     return [].concat(
-      getDirectionMoves(board, x, y, +1, 0),
-      getDirectionMoves(board, x, y, 0, +1),
-      getDirectionMoves(board, x, y, -1, 0),
-      getDirectionMoves(board, x, y, 0, -1),
+      getDirectionMoves(x, y, +1, 0),
+      getDirectionMoves(x, y, 0, +1),
+      getDirectionMoves(x, y, -1, 0),
+      getDirectionMoves(x, y, 0, -1),
     )
   }
 
-  function getKingMoves(board, x, y) {
+  function getKingMoves(x, y) {
     let moves = []
     ;[
       { x: x-1, y: y-1 },
@@ -252,7 +252,7 @@ module.exports = function moves(board, active, castling = '-') {
     return moves
   }
 
-  function getMoves(board, pieceMoves) {
+  function getMoves(pieceMoves) {
     let moves = []
 
     for (let y = 0; y < board.length; y++) {
@@ -262,7 +262,7 @@ module.exports = function moves(board, active, castling = '-') {
         if (!pieceMoves[square]) {
           continue 
         }
-        moves = moves.concat(pieceMoves[square](board, x, y))
+        moves = moves.concat(pieceMoves[square](x, y))
       }
     }
 
@@ -270,25 +270,25 @@ module.exports = function moves(board, active, castling = '-') {
   }
 
   const whitePieces = {
-    P: (board, x, y) => getPawnMoves(board, x, y, -1, 6),
+    P: (x, y) => getPawnMoves(x, y, -1, 6),
     N: getKnightMoves,
     B: getBishopMoves,
     R: getRookMoves,
-    Q: (board, x, y) => getBishopMoves(board, x, y).concat(getRookMoves(board, x, y)),
+    Q: (x, y) => getBishopMoves(x, y).concat(getRookMoves(x, y)),
     K: getKingMoves
   }
   const blackPieces = {
-    p: (board, x, y) => getPawnMoves(board, x, y, 1, 1),
+    p: (x, y) => getPawnMoves(x, y, 1, 1),
     n: getKnightMoves,
     b: getBishopMoves,
     r: getRookMoves,
-    q: (board, x, y) => getBishopMoves(board, x, y).concat(getRookMoves(board, x, y)),
+    q: (x, y) => getBishopMoves(x, y).concat(getRookMoves(x, y)),
     k: getKingMoves
   }
 
   if (active === 'w') {
-    return getMoves(board, whitePieces)
+    return getMoves(whitePieces)
   } else {
-    return getMoves(board, blackPieces)
+    return getMoves(blackPieces)
   }
 }
