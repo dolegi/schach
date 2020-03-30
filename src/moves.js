@@ -5,6 +5,7 @@ const ownPieces = active => active === 'w' ? WHITE_PIECES : BLACK_PIECES
 const oppPieces = active => active === 'w' ? BLACK_PIECES : WHITE_PIECES
 const ownKing = active => active === 'w' ? 'K' : 'k'
 const oppKing = active => active === 'w' ? 'k' : 'K'
+const oppKnight = active => active === 'w' ? 'n' : 'N'
 const opponent = active => active === 'w' ? 'b' : 'w'
 
 module.exports = function moves(board, active, castling = '-') {
@@ -54,6 +55,26 @@ module.exports = function moves(board, active, castling = '-') {
     }
     if (active === 'b' && board[y+1] && (board[y+1][x-1] === 'P' || board[y+1][x+1] === 'P')) {
       attacked = true
+    }
+
+    // attacked by knight
+    const knightMoves = [
+      { x: x-1, y: y-2 },
+      { x: x-1, y: y+2 },
+      { x: x+1, y: y-2 },
+      { x: x+1, y: y+2 },
+      { x: x+2, y: y-1 },
+      { x: x+2, y: y+1 },
+      { x: x-2, y: y+1 },
+      { x: x-2, y: y-1 }
+    ]
+
+    for (let i = 0; i < knightMoves.length; i++) {
+      const { x: xd, y: yd }  = knightMoves[i]
+      if (board[yd] && board[yd][xd] === oppKnight(active)) {
+        attacked = true
+        break
+      }
     }
 
     return attacked

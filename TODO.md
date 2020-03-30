@@ -1,4 +1,5 @@
 - move generation
+-- castling through check
 -- in checkmate
 -- en passant
 -- game over
@@ -26,3 +27,4 @@
 -- moving into check
 -- BUG: pawns moving 2 squares (jumping over pieces)
 -- castling
+-- knights are attacking king

@@ -65,6 +65,14 @@ describe('moves', () => {
 
         expect(moves(board, active).length).toEqual(4)
       })
+
+      test('knight is attacking', () => {
+        const position = 'rnbqkb1r/pppppppp/8/8/8/5n2/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active } = history.pop()
+
+        expect(moves(board, active).length).toEqual(3)
+      })
     })
 
     describe('castling', () => {
@@ -156,6 +164,14 @@ describe('moves', () => {
         const { board, active } = history.pop()
 
         expect(moves(board, active).length).toEqual(4)
+      })
+
+      test('knight is attacking', () => {
+        const position = 'rnbqkbnr/pppppppp/3N4/8/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active } = history.pop()
+
+        expect(moves(board, active).length).toEqual(2)
       })
     })
 
