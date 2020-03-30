@@ -1,5 +1,5 @@
 - move generation
--- castling through check
+-- remove board from every function
 -- in checkmate
 -- en passant
 -- game over
@@ -28,3 +28,4 @@
 -- BUG: pawns moving 2 squares (jumping over pieces)
 -- castling
 -- knights are attacking king
+-- castling through check

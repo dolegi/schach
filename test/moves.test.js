@@ -105,6 +105,18 @@ describe('moves', () => {
         })
         expect(validMoves.length).toEqual(25)
       })
+
+      test('Cannot castle through check', () => {
+        const position = 'rnbqkb1r/pppppppp/8/8/8/4n3/PPPPPPPP/R3K2R w KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active, castling } = history.pop()
+        const validMoves = moves(board, active, castling)
+
+        validMoves.forEach(move => {
+          expect(Object.keys(move).length).toEqual(2)
+        })
+        expect(validMoves.length).toEqual(21)
+      })
     })
   })
 
@@ -204,6 +216,18 @@ describe('moves', () => {
           to2:  { x: 3, y: 0 }
         })
         expect(validMoves.length).toEqual(25)
+      })
+
+      test('Cannot castle through check', () => {
+        const position = 'r3k2r/pppppppp/4N3/8/8/8/PPPPPPPP/RNBQKB1R b KQkq - 0 1'
+        const { history } = chess(position)
+        const { board, active, castling } = history.pop()
+        const validMoves = moves(board, active, castling)
+
+        validMoves.forEach(move => {
+          expect(Object.keys(move).length).toEqual(2)
+        })
+        expect(validMoves.length).toEqual(21)
       })
     })
   })

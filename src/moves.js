@@ -213,10 +213,23 @@ module.exports = function moves(board, active, castling = '-') {
       b: { row: 0, kSide: 'k', qSide: 'q' }
     }[active]
 
+    function checkForCheck (move) {
+      const originalSquare = board[move.to.y][move.to.x] 
+      board[move.to.y][move.to.x] = board[move.from.y][move.from.x]
+      board[move.from.y][move.from.x] = null
+      const check = inCheck(board)
+
+      board[move.from.y][move.from.x] = board[move.to.y][move.to.x]
+      board[move.to.y][move.to.x] = originalSquare
+      return check
+    }
+
     if (!inCheck(board)) {
       if (castling.includes(kSide)
         && board[row][6] === null
-        && board[row][5] === null) {
+        && !checkForCheck({ from: { x, y }, to: { x: 6, y } })
+        && board[row][5] === null
+        && !checkForCheck({ from: { x, y }, to: { x: 5, y } })) {
         moves = moves.concat(addMove(board, {
           from: { x, y }, to: { x: 6, y },
           from2: { x: 7, y: row }, to2: { x: 5, y: row }
@@ -224,8 +237,11 @@ module.exports = function moves(board, active, castling = '-') {
       }
       if (castling.includes(qSide)
         && board[row][1] === null
+        && !checkForCheck({ from: { x, y }, to: { x: 1, y } })
         && board[row][2] === null
-        && board[row][3] === null) {
+        && !checkForCheck({ from: { x, y }, to: { x: 2, y } })
+        && board[row][3] === null
+        && !checkForCheck({ from: { x, y }, to: { x: 3, y } })) {
         moves = moves.concat(addMove(board, {
           from: { x, y }, to: { x: 2, y },
           from2: { x: 0, y: row }, to2: { x: 3, y: row }
