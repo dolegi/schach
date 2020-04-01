@@ -1,4 +1,4 @@
-const chess = require('../src/chess')
+import chess from '../src/chess'
 
 const DEFAULT_POSITION =
   'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'

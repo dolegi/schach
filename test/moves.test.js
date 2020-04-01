@@ -1,5 +1,5 @@
-const chess = require('../src/chess')
-const moves = require('../src/moves')
+import chess from '../src/chess'
+import moves from '../src/moves'
 
 describe('moves', () => {
   describe('white', () => {
