@@ -1,18 +1,16 @@
 const BLACK_PIECES = 'prnbqk'
 const WHITE_PIECES = 'PRNBQK'
 
-const ownPieces = active => active === 'w' ? WHITE_PIECES : BLACK_PIECES
-const oppPieces = active => active === 'w' ? BLACK_PIECES : WHITE_PIECES
-const ownKing = active => active === 'w' ? 'K' : 'k'
-const oppKing = active => active === 'w' ? 'k' : 'K'
-const oppKnight = active => active === 'w' ? 'n' : 'N'
-const opponent = active => active === 'w' ? 'b' : 'w'
 
 export default function moves(board, active, castling = '-') {
+  const ownPieces = active === 'w' ? WHITE_PIECES : BLACK_PIECES
+  const oppPieces = active === 'w' ? BLACK_PIECES : WHITE_PIECES
+  const ownKing = active === 'w' ? 'K' : 'k'
+  const oppKing = active === 'w' ? 'k' : 'K'
+  const oppKnight = active === 'w' ? 'n' : 'N'
+  const opponent = active === 'w' ? 'b' : 'w'
 
   function attacked(board, x, y) {
-    let attacked = false
-
     const directions = [
       { x: -1, y: -1, b: 'bq', w: 'BQ' },
       { x: -1, y: +1, b: 'bq', w: 'BQ' },
@@ -28,19 +26,17 @@ export default function moves(board, active, castling = '-') {
       let direction = directions[i]
 
       let to = { x: x+direction.x, y: y+direction.y }
-      while (true) {
+      for (let j = 0; j < 7; j++) { // pieces can move up to 7 squares
         if (!board[to.y] || board[to.y][to.x] === undefined) { // edge of board
           break
         }
-        if (direction[opponent(active)].includes(board[to.y][to.x])) { // attacked
-          attacked = true
-          break
+        if (direction[opponent].includes(board[to.y][to.x])) { // attacked
+          return true
         }
         if (to.x === x+direction.x &&
           to.y === y+direction.y &&
-          board[to.y][to.x] === oppKing(active)) { // attacked by king
-          attacked = true
-          break
+          board[to.y][to.x] === oppKing) { // attacked by king
+          return true
         }
         if (board[to.y][to.x] !== null) { // blocked by piece
           break
@@ -51,10 +47,10 @@ export default function moves(board, active, castling = '-') {
 
     // attacked by pawn
     if (active === 'w' && board[y-1] && (board[y-1][x-1] === 'p' || board[y-1][x+1] === 'p')) {
-      attacked = true
+      return true
     }
     if (active === 'b' && board[y+1] && (board[y+1][x-1] === 'P' || board[y+1][x+1] === 'P')) {
-      attacked = true
+      return true
     }
 
     // attacked by knight
@@ -71,23 +67,22 @@ export default function moves(board, active, castling = '-') {
 
     for (let i = 0; i < knightMoves.length; i++) {
       const { x: xd, y: yd }  = knightMoves[i]
-      if (board[yd] && board[yd][xd] === oppKnight(active)) {
-        attacked = true
-        break
+      if (board[yd] && board[yd][xd] === oppKnight) {
+        return true
       }
     }
 
-    return attacked
+    return false
   }
 
   function inCheck(board) {
     let pos = {}
     for (let y = 0 ; y < board.length; y++) {
       const row = board[y]
-      if (row.includes(ownKing(active))) {
+      if (row.includes(ownKing)) {
         pos.y = y
         for (let x = 0 ; x < row.length; x++) {
-          if (row[x] === ownKing(active)) {
+          if (row[x] === ownKing) {
             pos.x = x
             break
           }
@@ -122,10 +117,10 @@ export default function moves(board, active, castling = '-') {
     if (y === startRow && board[y+direction] && board[y+direction][x] === null && board[y+(direction*2)] && board[y+(direction*2)][x] === null) {
       moves = moves.concat(addMove(board, { from: { x, y }, to: { x, y: y+(direction*2) } }))
     }
-    if (board[y+direction] && board[y+direction][x-1] && oppPieces(active).includes(board[y+direction][x-1])) {
+    if (board[y+direction] && board[y+direction][x-1] && oppPieces.includes(board[y+direction][x-1])) {
       moves = moves.concat(addMove(board, { from: { x, y }, to: { x: x-1, y: y+direction } }))
     }
-    if (board[y+direction] && board[y+direction][x+1] && oppPieces(active).includes(board[y+direction][x+1])) {
+    if (board[y+direction] && board[y+direction][x+1] && oppPieces.includes(board[y+direction][x+1])) {
       moves = moves.concat(addMove(board, { from: { x, y }, to: { x: x+1, y: y+direction } }))
     }
     return moves
@@ -143,7 +138,7 @@ export default function moves(board, active, castling = '-') {
       { x: x-2, y: y+1 },
       { x: x-2, y: y-1 }
     ].forEach(to => {
-      if (board[to.y] && (board[to.y][to.x] === null || oppPieces(active).includes(board[to.y][to.x]))) {
+      if (board[to.y] && (board[to.y][to.x] === null || oppPieces.includes(board[to.y][to.x]))) {
         moves = moves.concat(addMove(board, { from: { x, y }, to }))
       }
     })
@@ -160,11 +155,11 @@ export default function moves(board, active, castling = '-') {
         blocked = true
         break
       }
-      if (ownPieces(active).includes(board[to.y][to.x])) { // blocked by own piece
+      if (ownPieces.includes(board[to.y][to.x])) { // blocked by own piece
         blocked = true
         break
       }
-      if (oppPieces(active).includes(board[to.y][to.x])) { // take piece
+      if (oppPieces.includes(board[to.y][to.x])) { // take piece
         blocked = true
       }
       moves = moves.concat(addMove(board, { from: { x, y }, to }))
@@ -203,7 +198,7 @@ export default function moves(board, active, castling = '-') {
       { x, y: y-1 },
       { x, y: y+1 }
     ].forEach(to => {
-      if (board[to.y] && (board[to.y][to.x] === null || oppPieces(active).includes(board[to.y][to.x]))) {
+      if (board[to.y] && (board[to.y][to.x] === null || oppPieces.includes(board[to.y][to.x]))) {
         moves = moves.concat(addMove(board, { from: { x, y }, to }))
       }
     })
@@ -259,7 +254,7 @@ export default function moves(board, active, castling = '-') {
       const row = board[y]
       for (let x = 0; x < row.length; x++) {
         const square = row[x]
-        if (!pieceMoves[square]) {
+        if (!pieceMoves[square] || oppPieces.includes(pieceMoves[square])) {
           continue 
         }
         moves = moves.concat(pieceMoves[square](x, y))

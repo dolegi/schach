@@ -1,6 +1,6 @@
+import moves from './moves.js'
 const DEFAULT_POSITION =
   'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-import moves from './moves.js'
 
 function parse(fen) {
   const [
@@ -61,6 +61,8 @@ export default function chess(fen = DEFAULT_POSITION) {
     }
     const lMove = lastMove()
     const board = JSON.parse(JSON.stringify(lMove.board))
+    let castling = lMove.castling
+
     board[move.to.y][move.to.x] = board[move.from.y][move.from.x]
     board[move.from.y][move.from.x] = null
     if (move.from2 && move.to2) { //castling
@@ -80,7 +82,7 @@ export default function chess(fen = DEFAULT_POSITION) {
     history.push({
       board,
       active: lMove.active === 'w' ? 'b' : 'w',
-      castling: lMove.castling,
+      castling,
       enPassant: lMove.enPassant,
       halfMove: lMove.halfMove,
       fullMove: lMove.fullMove + 1
