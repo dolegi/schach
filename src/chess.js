@@ -63,9 +63,18 @@ export default function chess(fen = DEFAULT_POSITION) {
     const board = JSON.parse(JSON.stringify(lMove.board))
     board[move.to.y][move.to.x] = board[move.from.y][move.from.x]
     board[move.from.y][move.from.x] = null
-    if (move.from2 && move.to2) {
+    if (move.from2 && move.to2) { //castling
       board[move.to2.y][move.to2.x] = board[move.from2.y][move.from2.x]
       board[move.from2.y][move.from2.x] = null
+
+      if (lMove.active === 'w') {
+        castling = castling.replace('KQ', '')
+      } else {
+        castling = castling.replace('KQ', '')
+      }
+      if (castling.length === 0) {
+        castling = '-'
+      }
     }
 
     history.push({

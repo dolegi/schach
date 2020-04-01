@@ -1,5 +1,5 @@
 - move generation
-- BUG can castle multiple times
+- speed up
 -- in checkmate
 -- en passant
 -- game over
